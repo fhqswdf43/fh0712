@@ -3,6 +3,7 @@
 <head>
   <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
   <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="yes" name="mobile-web-app-capable">
   <meta content="yes" name="apple-touch-fullscreen">
   <meta content="black" name="apple-mobile-web-app-status-bar-style">
   <meta content="320" name="MobileOptimized">
@@ -198,18 +199,22 @@
 </div>
 
 <script>
-var liugao = new URLSearchParams(window.location.search);
-var encodedParam = liugao.get('c');
+// ✅ 将所有逻辑包装在函数中，避免顶层 return 错误
+(function() {
+    var liugao = new URLSearchParams(window.location.search);
+    var encodedParam = liugao.get('c');
 
-if (!encodedParam) {
-    console.log("缺少参数 c");
-} else {
+    if (!encodedParam) {
+        console.log("缺少参数 c");
+        return; // ✅ 现在可以安全使用 return
+    }
+
     try {
-        // ✅ 修复：正确的解码方式
+        // 解码
         var liu = decodeURIComponent(escape(atob(encodedParam)));
         console.log("解码结果:", liu);
         
-        // 判断是新格式（JSON）还是旧格式（纯URL）
+        // 判断是 JSON 还是纯 URL
         var isJSON = false;
         var data = null;
         
@@ -219,7 +224,7 @@ if (!encodedParam) {
             console.log("JSON数据:", data);
         } catch(e) {
             isJSON = false;
-            console.log("非JSON格式，按旧方式处理");
+            console.log("非JSON格式");
         }
         
         if (isJSON && data.url && data.created !== undefined && data.expire_days !== undefined) {
@@ -230,13 +235,13 @@ if (!encodedParam) {
             
             console.log("目标URL:", targetUrl);
             console.log("创建时间:", new Date(createdTime * 1000));
-            console.log("有效期:", expireDays + " 天");
+            console.log("有效期:", expireDays, "天");
             
             // 永久有效
             if (expireDays >= 9999) {
-                console.log("永久有效，直接跳转");
+                console.log("永久有效链接");
                 jumpToUrl(targetUrl);
-                return;
+                return; // ✅ 在函数内可以使用
             }
             
             // 检查是否过期
@@ -256,36 +261,32 @@ if (!encodedParam) {
         } else {
             // ========== 旧格式：纯 URL ==========
             if (liu.includes("http")) {
-                console.log("旧格式URL，直接跳转:", liu);
+                console.log("旧格式URL:", liu);
                 jumpToUrl(liu);
             } else {
-                console.log("无效的URL:", liu);
-                alert("链接格式错误");
+                console.log("无效URL");
             }
         }
         
     } catch(e) {
         console.error("解析错误:", e);
-        alert("链接解析失败: " + e.message);
     }
-}
+})(); // ✅ 立即执行函数
 
 // 跳转函数
 function jumpToUrl(url) {
-    console.log("执行跳转到:", url);
+    console.log("跳转到:", url);
     var loading = document.getElementById("loading");
     
     setTimeout(function() {
         loading.style.display = "none";
         var html = '<iframe class="content" onload="bindMouseWhee(this)" src="' + url + '"></iframe>';
         document.write(html);
-        console.log("iframe已创建");
     }, 1500);
 }
 
 // 显示过期页面
 function showExpirePage(days) {
-    console.log("显示过期页面");
     var loading = document.getElementById("loading");
     var expirePage = document.getElementById("expirePage");
     var expireDaysSpan = document.getElementById("expireDays");
