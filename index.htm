@@ -48,69 +48,33 @@
 }
 
 @keyframes dot-3-move {
-    20% {
-        transform: scale(1)
-    }
-    45% {
-        transform: translateY(-18px) scale(.45)
-    }
-    60% {
-        transform: translateY(-25px) scale(.45)
-    }
-    80% {
-        transform: translateY(-25px) scale(.45)
-    }
-    100% {
-        transform: translateY(0px) scale(1)
-    }
+    20% { transform: scale(1) }
+    45% { transform: translateY(-18px) scale(.45) }
+    60% { transform: translateY(-25px) scale(.45) }
+    80% { transform: translateY(-25px) scale(.45) }
+    100% { transform: translateY(0px) scale(1) }
 }
 
 @keyframes dot-2-move {
-    20% {
-        transform: scale(1)
-    }
-    45% {
-        transform: translate(-16px, 12px) scale(.45)
-    }
-    60% {
-        transform: translate(-20px, 15px) scale(.45)
-    }
-    80% {
-        transform: translate(-20px, 15px) scale(.45)
-    }
-    100% {
-        transform: translateY(0px) scale(1)
-    }
+    20% { transform: scale(1) }
+    45% { transform: translate(-16px, 12px) scale(.45) }
+    60% { transform: translate(-20px, 15px) scale(.45) }
+    80% { transform: translate(-20px, 15px) scale(.45) }
+    100% { transform: translateY(0px) scale(1) }
 }
 
 @keyframes dot-1-move {
-    20% {
-        transform: scale(1)
-    }
-    45% {
-        transform: translate(16px, 12px) scale(.45)
-    }
-    60% {
-        transform: translate(20px, 15px) scale(.45)
-    }
-    80% {
-        transform: translate(20px, 15px) scale(.45)
-    }
-    100% {
-        transform: translateY(0px) scale(1)
-    }
+    20% { transform: scale(1) }
+    45% { transform: translate(16px, 12px) scale(.45) }
+    60% { transform: translate(20px, 15px) scale(.45) }
+    80% { transform: translate(20px, 15px) scale(.45) }
+    100% { transform: translateY(0px) scale(1) }
 }
 
 @keyframes rotate-move {
-    55% {
-        transform: translate(-50%, -50%) rotate(0deg)
-    }
-    80% {
-        transform: translate(-50%, -50%) rotate(360deg)
-    }
-    100% {
-        transform: translate(-50%, -50%) rotate(360deg)
-    }
+    55% { transform: translate(-50%, -50%) rotate(0deg) }
+    80% { transform: translate(-50%, -50%) rotate(360deg) }
+    100% { transform: translate(-50%, -50%) rotate(360deg) }
 }
 
 .content {
@@ -121,7 +85,6 @@
     top: -2px;
 }
 
-/* 过期提示页面 */
 .expire-page {
     display: none;
     position: fixed;
@@ -239,12 +202,11 @@ var liugao = new URLSearchParams(window.location.search);
 var encodedParam = liugao.get('c');
 
 if (!encodedParam) {
-    console.log("缺少参数");
-    alert("链接无效");
+    console.log("缺少参数 c");
 } else {
     try {
-        // Base64 解码
-        var liu = atob(encodedParam);
+        // ✅ 修复：正确的解码方式
+        var liu = decodeURIComponent(escape(atob(encodedParam)));
         console.log("解码结果:", liu);
         
         // 判断是新格式（JSON）还是旧格式（纯URL）
@@ -252,26 +214,27 @@ if (!encodedParam) {
         var data = null;
         
         try {
-            // 尝试解析为 JSON
             data = JSON.parse(liu);
             isJSON = true;
+            console.log("JSON数据:", data);
         } catch(e) {
-            // 不是 JSON，按旧格式处理
             isJSON = false;
+            console.log("非JSON格式，按旧方式处理");
         }
         
         if (isJSON && data.url && data.created !== undefined && data.expire_days !== undefined) {
             // ========== 新格式：带过期验证 ==========
             var targetUrl = data.url;
-            var createdTime = data.created; // 创建时间戳（秒）
-            var expireDays = data.expire_days; // 有效天数
+            var createdTime = data.created;
+            var expireDays = data.expire_days;
             
-            console.log("链接创建时间:", new Date(createdTime * 1000));
-            console.log("有效期天数:", expireDays);
+            console.log("目标URL:", targetUrl);
+            console.log("创建时间:", new Date(createdTime * 1000));
+            console.log("有效期:", expireDays + " 天");
             
             // 永久有效
             if (expireDays >= 9999) {
-                console.log("永久有效链接");
+                console.log("永久有效，直接跳转");
                 jumpToUrl(targetUrl);
                 return;
             }
@@ -283,46 +246,46 @@ if (!encodedParam) {
             console.log("已过天数:", elapsedDays.toFixed(2));
             
             if (elapsedDays > expireDays) {
-                // 已过期
                 console.log("链接已过期");
                 showExpirePage(expireDays);
             } else {
-                // 未过期，正常跳转
-                console.log("链接有效，跳转中...");
+                console.log("链接有效，剩余", (expireDays - elapsedDays).toFixed(2), "天");
                 jumpToUrl(targetUrl);
             }
             
         } else {
-            // ========== 旧格式：纯 URL，直接跳转 ==========
+            // ========== 旧格式：纯 URL ==========
             if (liu.includes("http")) {
-                console.log("旧格式链接，直接跳转");
+                console.log("旧格式URL，直接跳转:", liu);
                 jumpToUrl(liu);
             } else {
-                console.log("无效的URL格式");
+                console.log("无效的URL:", liu);
                 alert("链接格式错误");
             }
         }
         
     } catch(e) {
         console.error("解析错误:", e);
-        alert("链接解析失败");
+        alert("链接解析失败: " + e.message);
     }
 }
 
 // 跳转函数
 function jumpToUrl(url) {
+    console.log("执行跳转到:", url);
     var loading = document.getElementById("loading");
+    
     setTimeout(function() {
         loading.style.display = "none";
+        var html = '<iframe class="content" onload="bindMouseWhee(this)" src="' + url + '"></iframe>';
+        document.write(html);
+        console.log("iframe已创建");
     }, 1500);
-    
-    var html = '<iframe class="content" onload="bindMouseWhee(this)" src="' + url + '"></iframe>';
-    document.write(html);
-    console.log("跳转到:", url);
 }
 
 // 显示过期页面
 function showExpirePage(days) {
+    console.log("显示过期页面");
     var loading = document.getElementById("loading");
     var expirePage = document.getElementById("expirePage");
     var expireDaysSpan = document.getElementById("expireDays");
@@ -332,7 +295,7 @@ function showExpirePage(days) {
     expirePage.style.display = "block";
 }
 
-// 鼠标滚轮兼容（iframe）
+// 鼠标滚轮兼容
 var firefox = navigator.userAgent.indexOf('Firefox') != -1;
 
 function MouseWheel(e, doc) {
@@ -351,7 +314,7 @@ function bindMouseWhee(ifr) {
             MouseWheel(e || ifr.contentWindow.event, doc)
         });
     } catch(e) {
-        console.log('跨域无法获取iframe加载document', e);
+        console.log('跨域限制:', e.message);
     }
 }
 </script>
