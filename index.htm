@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
@@ -5,322 +6,355 @@
   <meta content="yes" name="apple-touch-fullscreen">
   <meta content="black" name="apple-mobile-web-app-status-bar-style">
   <meta content="320" name="MobileOptimized">
-  <title></title>
+  <meta charset="UTF-8">
+  <title>正在跳转...</title>
 <style>
 .container {
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotate-move 2s ease-in-out infinite;
+}
+
+.dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #000;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.dot-3 {
+    background-color: #f74d75;
+    animation: dot-3-move 2s ease infinite;
+}
+
+.dot-2 {
+    background-color: #10beae;
+    animation: dot-2-move 2s ease infinite;
+}
+
+.dot-1 {
+    background-color: #ffe386;
+    animation: dot-1-move 2s ease infinite;
+}
+
+@keyframes dot-3-move {
+    20% {
+        transform: scale(1)
     }
-
-    .dot {
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background-color: #000;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
+    45% {
+        transform: translateY(-18px) scale(.45)
     }
-
-    .dot-3 {
-        background-color: #f74d75;
+    60% {
+        transform: translateY(-25px) scale(.45)
     }
-
-    .dot-2 {
-        background-color: #10beae;
+    80% {
+        transform: translateY(-25px) scale(.45)
     }
-
-    .dot-1 {
-        background-color: #ffe386;
+    100% {
+        transform: translateY(0px) scale(1)
     }
+}
 
-    .dot-3 {
-        background-color: #f74d75;
-        animation: dot-3-move 2s ease infinite;
+@keyframes dot-2-move {
+    20% {
+        transform: scale(1)
     }
-
-    @keyframes dot-3-move {
-        20% {
-            transform: scale(1)
-        }
-
-        45% {
-            transform: translateY(-18px) scale(.45)
-        }
-
-        60% {
-            transform: translateY(-25px) scale(.45)
-        }
-
-        80% {
-            transform: translateY(-25px) scale(.45)
-        }
-
-        100% {
-            transform: translateY(0px) scale(1)
-        }
+    45% {
+        transform: translate(-16px, 12px) scale(.45)
     }
-
-    .dot-2 {
-        background-color: #10beae;
-        animation: dot-2-move 2s ease infinite;
+    60% {
+        transform: translate(-20px, 15px) scale(.45)
     }
-
-    .dot-1 {
-        background-color: #ffe386;
-        animation: dot-1-move 2s ease infinite;
+    80% {
+        transform: translate(-20px, 15px) scale(.45)
     }
-
-    @keyframes dot-2-move {
-        20% {
-            transform: scale(1)
-        }
-
-        45% {
-            transform: translate(-16px, 12px) scale(.45)
-        }
-
-        60% {
-            transform: translate(-20px, 15px) scale(.45)
-        }
-
-        80% {
-            transform: translate(-20px, 15px) scale(.45)
-        }
-
-        100% {
-            transform: translateY(0px) scale(1)
-        }
+    100% {
+        transform: translateY(0px) scale(1)
     }
+}
 
-    @keyframes dot-1-move {
-        20% {
-            transform: scale(1)
-        }
-
-        45% {
-            transform: translate(16px, 12px) scale(.45)
-        }
-
-        60% {
-            transform: translate(20px, 15px) scale(.45)
-        }
-
-        80% {
-            transform: translate(20px, 15px) scale(.45)
-        }
-
-        100% {
-            transform: translateY(0px) scale(1)
-        }
+@keyframes dot-1-move {
+    20% {
+        transform: scale(1)
     }
-
-    .container {
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        animation: rotate-move 2s ease-in-out infinite;
+    45% {
+        transform: translate(16px, 12px) scale(.45)
     }
-
-    @keyframes rotate-move {
-        55% {
-            transform: translate(-50%, -50%) rotate(0deg)
-        }
-
-        80% {
-            transform: translate(-50%, -50%) rotate(360deg)
-        }
-
-        100% {
-            transform: translate(-50%, -50%) rotate(360deg)
-        }
+    60% {
+        transform: translate(20px, 15px) scale(.45)
     }
-.container {
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+    80% {
+        transform: translate(20px, 15px) scale(.45)
     }
-
-    .dot {
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        background-color: #000;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
+    100% {
+        transform: translateY(0px) scale(1)
     }
+}
 
-    .dot-3 {
-        background-color: #f74d75;
+@keyframes rotate-move {
+    55% {
+        transform: translate(-50%, -50%) rotate(0deg)
     }
-
-    .dot-2 {
-        background-color: #10beae;
+    80% {
+        transform: translate(-50%, -50%) rotate(360deg)
     }
-
-    .dot-1 {
-        background-color: #ffe386;
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg)
     }
+}
 
-    .dot-3 {
-        background-color: #f74d75;
-        animation: dot-3-move 2s ease infinite;
-    }
+.content {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    left: -2px;
+    top: -2px;
+}
 
-    @keyframes dot-3-move {
-        20% {
-            transform: scale(1)
-        }
+/* 过期提示页面 */
+.expire-page {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+    z-index: 9999;
+    overflow-y: auto;
+}
 
-        45% {
-            transform: translateY(-18px) scale(.45)
-        }
+.expire-box {
+    max-width: 90%;
+    width: 360px;
+    margin: 50px auto;
+    padding: 30px 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    text-align: center;
+}
 
-        60% {
-            transform: translateY(-25px) scale(.45)
-        }
+.expire-icon {
+    font-size: 60px;
+    margin-bottom: 15px;
+}
 
-        80% {
-            transform: translateY(-25px) scale(.45)
-        }
+.expire-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
 
-        100% {
-            transform: translateY(0px) scale(1)
-        }
-    }
+.expire-text {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
 
-    .dot-2 {
-        background-color: #10beae;
-        animation: dot-2-move 2s ease infinite;
-    }
+.expire-days {
+    color: #e74c3c;
+    font-weight: bold;
+}
 
-    .dot-1 {
-        background-color: #ffe386;
-        animation: dot-1-move 2s ease infinite;
-    }
+.qr-container {
+    background: #f0f8ff;
+    border: 2px solid #cce5ff;
+    border-radius: 12px;
+    padding: 15px;
+    margin: 20px 0;
+}
 
-    @keyframes dot-2-move {
-        20% {
-            transform: scale(1)
-        }
+.qr-container img {
+    max-width: 180px;
+    width: 100%;
+    border-radius: 8px;
+    margin: 10px 0;
+}
 
-        45% {
-            transform: translate(-16px, 12px) scale(.45)
-        }
+.qr-tip {
+    font-size: 12px;
+    color: #666;
+    margin-top: 8px;
+}
 
-        60% {
-            transform: translate(-20px, 15px) scale(.45)
-        }
+.btn-refresh {
+    width: 100%;
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
-        80% {
-            transform: translate(-20px, 15px) scale(.45)
-        }
-
-        100% {
-            transform: translateY(0px) scale(1)
-        }
-    }
-
-    @keyframes dot-1-move {
-        20% {
-            transform: scale(1)
-        }
-
-        45% {
-            transform: translate(16px, 12px) scale(.45)
-        }
-
-        60% {
-            transform: translate(20px, 15px) scale(.45)
-        }
-
-        80% {
-            transform: translate(20px, 15px) scale(.45)
-        }
-
-        100% {
-            transform: translateY(0px) scale(1)
-        }
-    }
-
-    .container {
-        width: 100px;
-        height: 100px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        animation: rotate-move 2s ease-in-out infinite;
-    }
-
-    @keyframes rotate-move {
-        55% {
-            transform: translate(-50%, -50%) rotate(0deg)
-        }
-
-        80% {
-            transform: translate(-50%, -50%) rotate(360deg)
-        }
-
-        100% {
-            transform: translate(-50%, -50%) rotate(360deg)
-        }
-    }
-   .content{height:100%;width:100%;position: fixed;left: -2px;top: -2px;}
+.btn-refresh:active {
+    background: #2980b9;
+}
 </style>
+</head>
 <body>
 
-<div class="container">
-            <div class="dot dot-1"></div>
-            <div class="dot dot-2"></div>
-            <div class="dot dot-3"></div>
+<div class="container" id="loading">
+    <div class="dot dot-1"></div>
+    <div class="dot dot-2"></div>
+    <div class="dot dot-3"></div>
 </div>
- <script>
-var urlParams = new URLSearchParams(window.location.search);
-var encodedParam = urlParams.get('c');
-var tureurl = atob(encodedParam);
-if (tureurl.includes("http")) {
-var square = document.getElementById("container");
-setTimeout(function() {
-  square.style.display = "none";
-}, 1500);
- var html='<iframe class="content" οnlοad="bindMouseWhee(this)" src='+tureurl+'></iframe>';
-  document.writeln(html);
-console.log(tureurl);
+
+<div class="expire-page" id="expirePage">
+    <div class="expire-box">
+        <div class="expire-icon">⚠️</div>
+        <div class="expire-title">链接已到期</div>
+        <div class="expire-text">
+            该防红链接的 <span class="expire-days" id="expireDays"></span> 有效期已过<br>
+            请联系管理员续费使用
+        </div>
+        
+        <div class="qr-container">
+            <div style="font-weight: bold; margin-bottom: 5px;">扫码联系客服续费</div>
+            <img src="https://wx.vip51688.cn/console/upload/1DhKUkqHj.jpg" alt="客服二维码">
+            <div class="qr-tip">微信：KMHSLXS</div>
+        </div>
+
+        <button class="btn-refresh" onclick="location.reload()">🔄 刷新重试</button>
+    </div>
+</div>
+
+<script>
+var liugao = new URLSearchParams(window.location.search);
+var encodedParam = liugao.get('c');
+
+if (!encodedParam) {
+    console.log("缺少参数");
+    alert("链接无效");
 } else {
-  console.log("nourls");
+    try {
+        // Base64 解码
+        var liu = atob(encodedParam);
+        console.log("解码结果:", liu);
+        
+        // 判断是新格式（JSON）还是旧格式（纯URL）
+        var isJSON = false;
+        var data = null;
+        
+        try {
+            // 尝试解析为 JSON
+            data = JSON.parse(liu);
+            isJSON = true;
+        } catch(e) {
+            // 不是 JSON，按旧格式处理
+            isJSON = false;
+        }
+        
+        if (isJSON && data.url && data.created !== undefined && data.expire_days !== undefined) {
+            // ========== 新格式：带过期验证 ==========
+            var targetUrl = data.url;
+            var createdTime = data.created; // 创建时间戳（秒）
+            var expireDays = data.expire_days; // 有效天数
+            
+            console.log("链接创建时间:", new Date(createdTime * 1000));
+            console.log("有效期天数:", expireDays);
+            
+            // 永久有效
+            if (expireDays >= 9999) {
+                console.log("永久有效链接");
+                jumpToUrl(targetUrl);
+                return;
+            }
+            
+            // 检查是否过期
+            var currentTime = Math.floor(Date.now() / 1000);
+            var elapsedDays = (currentTime - createdTime) / 86400;
+            
+            console.log("已过天数:", elapsedDays.toFixed(2));
+            
+            if (elapsedDays > expireDays) {
+                // 已过期
+                console.log("链接已过期");
+                showExpirePage(expireDays);
+            } else {
+                // 未过期，正常跳转
+                console.log("链接有效，跳转中...");
+                jumpToUrl(targetUrl);
+            }
+            
+        } else {
+            // ========== 旧格式：纯 URL，直接跳转 ==========
+            if (liu.includes("http")) {
+                console.log("旧格式链接，直接跳转");
+                jumpToUrl(liu);
+            } else {
+                console.log("无效的URL格式");
+                alert("链接格式错误");
+            }
+        }
+        
+    } catch(e) {
+        console.error("解析错误:", e);
+        alert("链接解析失败");
+    }
 }
-  </script>
- <script>
+
+// 跳转函数
+function jumpToUrl(url) {
+    var loading = document.getElementById("loading");
+    setTimeout(function() {
+        loading.style.display = "none";
+    }, 1500);
+    
+    var html = '<iframe class="content" onload="bindMouseWhee(this)" src="' + url + '"></iframe>';
+    document.write(html);
+    console.log("跳转到:", url);
+}
+
+// 显示过期页面
+function showExpirePage(days) {
+    var loading = document.getElementById("loading");
+    var expirePage = document.getElementById("expirePage");
+    var expireDaysSpan = document.getElementById("expireDays");
+    
+    loading.style.display = "none";
+    expireDaysSpan.textContent = days + " 天";
+    expirePage.style.display = "block";
+}
+
+// 鼠标滚轮兼容（iframe）
 var firefox = navigator.userAgent.indexOf('Firefox') != -1;
-function MouseWheel(e,doc){
-	e.preventDefault && e.preventDefault(),e.returnValue = false;
-	var up = firefox && e.detail < 0 || e.wheelDelta > 0;
-	doc.body.scrollTop = doc.documentElement.scrollTop += up?-50:50;
+
+function MouseWheel(e, doc) {
+    e.preventDefault && e.preventDefault();
+    e.returnValue = false;
+    var up = firefox && e.detail < 0 || e.wheelDelta > 0;
+    doc.body.scrollTop = doc.documentElement.scrollTop += up ? -50 : 50;
 }
-function bindMouseWhee(ifr){
-	try{
-		var doc = ifr.contentWindow.document;
-		firefox?doc.addEventListener('DOMMouseScroll',function(e){MouseWheel(e,doc)},false):(doc.onmousewheel = function(e){MouseWheel(e||ifr.contentWindow.event,doc)});
-	}catch(e){
-		alert('跨域无法获取iframe加载document'+e);
-	}
+
+function bindMouseWhee(ifr) {
+    try {
+        var doc = ifr.contentWindow.document;
+        firefox ? doc.addEventListener('DOMMouseScroll', function(e) {
+            MouseWheel(e, doc)
+        }, false) : (doc.onmousewheel = function(e) {
+            MouseWheel(e || ifr.contentWindow.event, doc)
+        });
+    } catch(e) {
+        console.log('跨域无法获取iframe加载document', e);
+    }
 }
-</script> 
+</script>
+
+</body>
+</html>
