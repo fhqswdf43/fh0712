@@ -140,6 +140,11 @@ h1 {
     font-size: 18px;
 }
 
+.tip-text .error {
+    color: #f44336;
+    font-weight: 600;
+}
+
 /* ========== 进入按钮 ========== */
 .enter-btn {
     display: inline-block;
@@ -290,10 +295,10 @@ h1 {
     </div>
 
     <!-- 标题 -->
-    <h1>安全验证通过</h1>
+    <h1 id="pageTitle">安全验证通过</h1>
 
     <!-- 提示文字 -->
-    <p class="tip-text">
+    <p class="tip-text" id="tipText">
         正在为您跳转目标页面<br>
         <span class="highlight" id="countdown">3</span> 秒后自动进入，或点击下方按钮
     </p>
@@ -315,17 +320,58 @@ var isRedirecting = false;
 var countdownTimer = null;
 var countdownSeconds = 3;
 
-// ========== GitHub 原版解码逻辑 ==========
+console.log('URL 参数 c:', encodedParam);
+
+// ========== 正确的解码逻辑（解析 JSON） ==========
 if (encodedParam) {
     try {
-        targetUrl = atob(encodedParam); // GitHub 原版直接解码
+        // 1. Base64 解码
+        var decoded = atob(encodedParam);
+        console.log('Base64 解码后:', decoded);
+        
+        // 2. 解析 JSON
+        var data = JSON.parse(decoded);
+        console.log('JSON 解析后:', data);
+        
+        // 3. 提取 URL
+        targetUrl = data.url || '';
+        var createdTime = data.created || 0;
+        var expireDays = data.expire_days || 30;
+        
+        console.log('目标 URL:', targetUrl);
+        console.log('创建时间:', new Date(createdTime * 1000));
+        console.log('有效期:', expireDays, '天');
+        
+        // 4. 检查是否过期
+        var currentTime = Math.floor(Date.now() / 1000);
+        var elapsedDays = (currentTime - createdTime) / 86400;
+        
+        console.log('已过时间:', elapsedDays.toFixed(2), '天');
+        
+        if (expireDays < 9999 && elapsedDays > expireDays) {
+            // 链接已过期
+            console.error('链接已过期！');
+            showError('链接已过期', '该链接的 ' + expireDays + ' 天有效期已过<br>已过时间：' + elapsedDays.toFixed(1) + ' 天');
+            targetUrl = ''; // 清空 URL
+        }
+        
     } catch (e) {
-        console.error('URL 解码失败:', e);
+        console.error('解码失败:', e);
+        showError('链接格式错误', '无法解析链接数据：' + e.message);
         targetUrl = '';
     }
+} else {
+    console.error('缺少参数 c');
+    showError('缺少参数', '链接中缺少必要的参数');
 }
 
-console.log('解码后 URL:', targetUrl);
+// ========== 显示错误信息 ==========
+function showError(title, message) {
+    document.getElementById('pageTitle').textContent = title;
+    document.getElementById('tipText').innerHTML = '<span class="error">' + message + '</span>';
+    document.getElementById('enterBtn').style.display = 'none';
+    document.getElementById('dotAnim').style.display = 'none';
+}
 
 // ========== 倒计时函数 ==========
 function startCountdown() {
@@ -349,6 +395,8 @@ function redirectToUrl() {
     if (isRedirecting || !targetUrl) return;
     isRedirecting = true;
 
+    console.log('开始跳转到:', targetUrl);
+
     // 清除定时器
     if (countdownTimer) {
         clearInterval(countdownTimer);
@@ -360,7 +408,7 @@ function redirectToUrl() {
         verifyBox.classList.add('fade-out');
     }
 
-    // 2. 0.5秒后显示iframe（使用 GitHub 原版方式）
+    // 2. 0.5秒后显示iframe
     setTimeout(function() {
         var iframe = document.getElementById('targetIframe');
         if (iframe && targetUrl) {
@@ -368,14 +416,17 @@ function redirectToUrl() {
             iframe.classList.add('show');
             iframe.onload = function() {
                 bindMouseWhee(this);
+                console.log('iframe 加载完成');
             };
-            console.log('正在跳转到:', targetUrl);
+            console.log('iframe src 已设置为:', targetUrl);
         }
     }, 500);
 }
 
 // ========== 初始化 ==========
 if (targetUrl && targetUrl.indexOf('http') === 0) {
+    
+    console.log('链接有效，开始初始化...');
     
     // 1.5秒后隐藏三点动画
     setTimeout(function() {
@@ -403,14 +454,11 @@ if (targetUrl && targetUrl.indexOf('http') === 0) {
     }
 
 } else {
-    // 无效链接
-    document.querySelector('.tip-text').innerHTML = 
-        '<span style="color:#f44336;">链接无效或已过期</span>';
-    document.getElementById('enterBtn').style.display = 'none';
-    console.error('无效的目标 URL:', targetUrl);
+    // 无效链接（已在上面显示错误信息）
+    console.error('链接验证失败，targetUrl:', targetUrl);
 }
 
-// ========== 鼠标滚轮兼容（GitHub 原版） ==========
+// ========== 鼠标滚轮兼容 ==========
 var firefox = navigator.userAgent.indexOf('Firefox') != -1;
 
 function MouseWheel(e, doc) {
